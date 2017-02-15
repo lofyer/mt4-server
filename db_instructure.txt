@@ -1,0 +1,12 @@
+trade:
+    order_id
+    symbol
+    arrive_time
+    send_time
+    type
+    size
+    price
+    slippage
+    stoploss
+    takeprofit
+    comment
