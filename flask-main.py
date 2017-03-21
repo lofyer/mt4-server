@@ -1,17 +1,34 @@
+#!/usr/local/bin/python3
+# -*- coding: UTF-8 -*-
+
 import os
 from flask import Flask, session, redirect, url_for, escape, request, send_from_directory
 from werkzeug import secure_filename
 import hashlib
 import json
+import pymysql
 
 app = Flask(__name__)
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = 'tmp/'
 
+db = pymysql.connect(
+    host = "localhost",
+    port = 3306,
+    user = "root",
+    passwd = "123456",
+    db = "rss",
+    charset = 'utf8'
+    )   
+    #cursorclass = pymysql.cursors.SSCursor) ### No longer needed in pymysql
+
+db.autocommit(1)
+cursor = db.cursor()
+
 ### SHA256
 KEY = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     if 'username' in session:
         return 'Logged in as %s' % escape(session['username'])
@@ -45,6 +62,15 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
+@app.route('/api/v1/alive', methods=['GET'])
+def alive():
+    if request.headers.get("Key") != KEY:
+        return "No key found."
+    if request.method == 'POST':
+        data = "What you post is %s" % request.get_data()
+        return data
+    return "Service OK."
+
 @app.route('/api/v1/post_trade', methods=['GET', 'POST'])
 def post_trade():
     if request.headers.get("Key") != KEY:
@@ -54,8 +80,10 @@ def post_trade():
         return data
     return "This is trade-posting page."
 
-@app.route('/get_all')
+@app.route('/api/v1/get_all')
 def get_all():
+    if request.json.get('username'):
+        print(request.json.get('username'))
     if 'username' not in session:
         return 'You must login.'
     return 'All messages!'

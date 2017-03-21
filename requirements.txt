@@ -1,0 +1,5 @@
+flask
+Flask-SQLAlchemy
+flask_httpauth
+flask_bootstrap
+passlib

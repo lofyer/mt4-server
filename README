@@ -1,7 +1,0 @@
-This is the API server for the mt4 client.
-
-/api/v1/get_all
-/api/v1/post_trade
-/api/v1/upload
-/api/v1/get_all
-/api/v1/get_all
