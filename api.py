@@ -12,9 +12,12 @@ import hashlib
 import jinja2.exceptions
 
 # Initialization
+db_path = os.path.join(os.path.dirname(__file__), 'db.sqlite')
+db_uri = 'sqlite:///{}'.format(db_path)
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lofyer'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['UPLOAD_FOLDER'] = 'tmp/'
@@ -126,6 +129,6 @@ def post_trade():
     return "This is trade-posting page."
 
 if __name__ == '__main__':
-    if not os.path.exists('db.sqlite'):
+    if not os.path.exists(db_path):
         db.create_all()
     app.run(debug=True)
