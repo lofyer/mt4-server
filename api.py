@@ -10,6 +10,7 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
 from datetime import datetime
 import hashlib
 import jinja2.exceptions
+import pymysql
 
 # Initialization
 db_path = os.path.join(os.path.dirname(__file__), 'db.sqlite')
@@ -115,9 +116,20 @@ def get_auth_token():
     return jsonify({'token': token.decode('ascii'), 'duration': 600})
 
 # Get resource test
+@app.route('/api/v1/health')
+def get_health():
+    return jsonify({"Service":"OK"})
+
+# Get resource test
 @app.route('/api/resource')
 @auth.login_required
 def get_resource():
+    return jsonify({'data': 'Hello, {}!'.format(g.user.username)})
+
+# Get resource test
+@app.route('/api/v1/get_trade', methods=['GET'])
+@auth.login_required
+def get_trade():
     return jsonify({'data': 'Hello, {}!'.format(g.user.username)})
 
 @app.route('/api/v1/post_trade', methods=['GET', 'POST'])
@@ -127,6 +139,38 @@ def post_trade():
         data = "What {} post is {}".format(g.user.username,request.get_data())
         return data
     return "This is trade-posting page."
+
+def allowed_file(filename):
+    if 'username' not in session:
+        return 'You must login.'
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+@app.route('/uploads', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file',
+                                    filename=filename))
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form action="" method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    '''
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    if 'username' not in session:
+        return 'You have no permission.'
+    #return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    return "File %s uploaded!" % filename
 
 if __name__ == '__main__':
     if not os.path.exists(db_path):
