@@ -3,3 +3,5 @@ Flask-SQLAlchemy
 flask_httpauth
 flask_bootstrap
 passlib
+jinja2
+itsdangerous

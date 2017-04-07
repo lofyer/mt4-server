@@ -3,7 +3,8 @@
 curl -k -i -X POST -H "Content-Type: application/json" -d '{"username":"demo","password":"demo"}' https://api.fusionworks.cn/api/users
 
 ### get resource
-#curl -u demo:123456 -i -X GET http://127.0.0.1:5000/api/resource
+curl -u demo:demo -i -X GET https://api.fusionworks.cn/api/resource
+curl -i -H 'Authorization: Basic ZGVtbzpkZW1v' -X GET https://api.fusionworks.cn/api/resource
 
 ### get token
 #curl -u demo:123456 -i -X GET http://127.0.0.1:5000/api/token
