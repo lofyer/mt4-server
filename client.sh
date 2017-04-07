@@ -1,6 +1,6 @@
 #!/bin/bash
 ### register
-#curl -i -X POST -H "Content-Type: application/json" -d '{"username":"demo","password":"123456"}' http://127.0.0.1:5000/api/users
+curl -k -i -X POST -H "Content-Type: application/json" -d '{"username":"demo","password":"demo"}' https://api.fusionworks.cn/api/users
 
 ### get resource
 #curl -u demo:123456 -i -X GET http://127.0.0.1:5000/api/resource
