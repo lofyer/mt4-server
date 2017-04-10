@@ -11,6 +11,17 @@ from datetime import datetime
 import hashlib
 import jinja2.exceptions
 import pymysql
+import ast, json
+
+fx_db = pymysql.connect(
+    host = "localhost",
+    port = 3306,
+    user = "root",
+    passwd = "123456",
+    db = "forex"
+    )
+fx_db.autocommit(1)
+cursor = fx_db.cursor()
 
 # Initialization
 db_uri = 'sqlite:///db.sqlite'
@@ -128,6 +139,9 @@ def get_resource():
 @app.route('/api/v1/history')
 @auth.login_required
 def get_history():
+    sql_cmd = 'select * from posts where username="%s";'.format(g.user.username)
+    cursor.execute(sql_cmd)
+    data = list(cursor.fetchall())
     data = "Trade history of {}:</br>".format(g.user.username)
     return data
 
@@ -135,8 +149,12 @@ def get_history():
 @auth.login_required
 def post_trade():
     if request.method == 'POST':
-        data = "What {} post is {}".format(g.user.username,request.get_data())
-        return data
+        data = request.get_data()
+        response = "What {} post is {}".format(g.user.username,request.get_data())
+        print(response)
+        data_dict = ast.literal_eval(data.decode(encoding="utf-8"))
+        sql_cmd = 'insert posts '.format()
+        return response
     return "This is trade-posting page."
 
 def allowed_file(filename):

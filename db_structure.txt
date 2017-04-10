@@ -1,0 +1,49 @@
+orders:
+    account
+    terminal
+    account_id
+    order_id
+    symbol
+    arrive_time
+    send_time
+    local_time
+    type
+    size
+    price
+    slippage
+    stoploss
+    takeprofit
+    taxes
+    swap
+    ma
+    band
+    macd
+    rsi
+    ichimoku
+    comment
+
+SQL: CREATE TABLE `orders` (
+  `account` int(11) DEFAULT NULL,
+  `terminal` int(11) DEFAULT NULL,
+  `account_id` int(11) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `symbol` varchar(128) DEFAULT NULL,
+  `arrive_time` varchar(128) DEFAULT NULL,
+  `send_time` varchar(128) DEFAULT NULL,
+  `local_time` varchar(128) DEFAULT NULL,
+  `type` varchar(128) DEFAULT NULL,
+  `size` varchar(64) DEFAULT NULL,
+  `price` varchar(64) DEFAULT NULL,
+  `slippage` varchar(128) DEFAULT NULL,
+  `stoploss` varchar(128) DEFAULT NULL,
+  `takeprofit` varchar(128) DEFAULT NULL,
+  `taxes` varchar(128) DEFAULT NULL,
+  `swap` varchar(128) DEFAULT NULL,
+  `ma` varchar(128) DEFAULT NULL,
+  `band` varchar(128) DEFAULT NULL,
+  `macd` varchar(128) DEFAULT NULL,
+  `rsi` varchar(128) DEFAULT NULL,
+  `ichimoku` varchar(128) DEFAULT NULL,
+  `comment` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
