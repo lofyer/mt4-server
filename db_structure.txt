@@ -1,4 +1,5 @@
 orders:
+    username
     account
     terminal
     account_id
@@ -23,8 +24,9 @@ orders:
     comment
 
 SQL: CREATE TABLE `orders` (
-  `account` int(11) DEFAULT NULL,
-  `terminal` int(11) DEFAULT NULL,
+  `username` varchar(128) DEFAULT NULL,
+  `account` varchar(128) DEFAULT NULL,
+  `terminal` varchar(128) DEFAULT NULL,
   `account_id` int(11) DEFAULT NULL,
   `order_id` int(11) DEFAULT NULL,
   `symbol` varchar(128) DEFAULT NULL,
@@ -32,13 +34,13 @@ SQL: CREATE TABLE `orders` (
   `send_time` varchar(128) DEFAULT NULL,
   `local_time` varchar(128) DEFAULT NULL,
   `type` varchar(128) DEFAULT NULL,
-  `size` varchar(64) DEFAULT NULL,
-  `price` varchar(64) DEFAULT NULL,
-  `slippage` varchar(128) DEFAULT NULL,
-  `stoploss` varchar(128) DEFAULT NULL,
-  `takeprofit` varchar(128) DEFAULT NULL,
-  `taxes` varchar(128) DEFAULT NULL,
-  `swap` varchar(128) DEFAULT NULL,
+  `size` float(24) DEFAULT NULL,
+  `price` float(24) DEFAULT NULL,
+  `slippage` float(24) DEFAULT NULL,
+  `stoploss` float(24) DEFAULT NULL,
+  `takeprofit` float(24) DEFAULT NULL,
+  `taxes` float(24) DEFAULT NULL,
+  `swap` float(24) DEFAULT NULL,
   `ma` varchar(128) DEFAULT NULL,
   `band` varchar(128) DEFAULT NULL,
   `macd` varchar(128) DEFAULT NULL,

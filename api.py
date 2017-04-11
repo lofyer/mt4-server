@@ -139,11 +139,12 @@ def get_resource():
 @app.route('/api/v1/history')
 @auth.login_required
 def get_history():
-    sql_cmd = 'select * from posts where username="%s";'.format(g.user.username)
+    sql_cmd = 'select * from orders where username="{}";'.format(g.user.username)
     cursor.execute(sql_cmd)
-    data = list(cursor.fetchall())
-    data = "Trade history of {}:</br>".format(g.user.username)
-    return data
+    data = [ x for x in cursor.fetchall() ]
+    #print(data)
+    response = "Trade history of {}:</br>{}".format(g.user.username, data)
+    return response
 
 @app.route('/api/v1/post_trade', methods=['GET', 'POST'])
 @auth.login_required
@@ -151,9 +152,14 @@ def post_trade():
     if request.method == 'POST':
         data = request.get_data()
         response = "What {} post is {}".format(g.user.username,request.get_data())
-        print(response)
+        #print(response)
         data_dict = ast.literal_eval(data.decode(encoding="utf-8"))
-        sql_cmd = 'insert posts '.format()
+        print(data_dict)
+        keys = list(data_dict.keys())
+        values = list(data_dict.values())
+        sql_cmd = 'INSERT IGNORE INTO orders ({}) values ({})'.format(str(keys)[1:-1].replace("'", ""), str(values)[1:-1])
+        print(sql_cmd)
+        cursor.execute(sql_cmd)
         return response
     return "This is trade-posting page."
 
